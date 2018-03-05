@@ -16,7 +16,7 @@ module.exports = (env) => {
 
             // Use path join medthod to join 2 path together
             // __dirname is current path location
-            path: path.join(__dirname, 'public'),
+            path: path.join(__dirname, 'public', 'dist'),
             filename: 'bundle.js'
         },
 
@@ -68,7 +68,9 @@ module.exports = (env) => {
             contentBase: path.join(__dirname, 'public'),
 
              // set client side route
-            historyApiFallback: true
+            historyApiFallback: true,
+
+            publicPath: '/dist/'
         }
     }
 }
