@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { addExpense } from '../actions/expenses'
+import { startAddExpense } from '../actions/expenses'
 import ExpenseForm from './ExpenseForm'
 
 // Avoid function inline by re-write to class base component
 class AddExpensePage extends React.Component {
     onSubmit = (expense) => {
-        this.props.addExpense(expense)
+        this.props.startAddExpense(expense)
         this.props.history.push('/')
     }
     render() {
@@ -44,7 +44,7 @@ class AddExpensePage extends React.Component {
 
 // get dispatch function to prop that can be function ready to use 
 const mapDispatchToProps = (dispatch) => ({
-    addExpense: (expense) => dispatch(addExpense(expense))
+    startAddExpense: (expense) => dispatch(startAddExpense(expense))
 })
 
 // export to test

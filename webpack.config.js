@@ -1,6 +1,19 @@
 // Require node path
 const path = require('path');
+const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+// process.env.NODE_ENV = store our environment status
+// config process.env.NODE_ENV if exist use it or change to development
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+
+// check current environment status
+if (process.env.NODE_ENV === 'test') {
+    require('dotenv').config({ path: '.env.test' })
+} else if (process.env.NODE_ENV === 'development') {
+    require('dotenv').config({ path: '.env.development' })
+}
+
 // for product 
 module.exports = (env) => {
     const isProduction = env ==='production'
@@ -56,7 +69,16 @@ module.exports = (env) => {
             }]
         },
         plugins: [
-            CSSExtract
+            CSSExtract,
+            // pass down a value use in bundle
+            new webpack.DefinePlugin({
+                'process.env.FIREBASE_API_KEY': JSON.stringify(process.env.FIREBASE_API_KEY),
+                'process.env.FIREBASE_AUTH_DOMAIN': JSON.stringify(process.env.FIREBASE_AUTH_DOMAIN),
+                'process.env.FIREBASE_DATABASE_URL': JSON.stringify(process.env.FIREBASE_DATABASE_URL),
+                'process.env.FIREBASE_PROJECT_ID': JSON.stringify(process.env.FIREBASE_PROJECT_ID),
+                'process.env.FIREBASE_STORAGE_BUCKET': JSON.stringify(process.env.FIREBASE_STORAGE_BUCKET),
+                'process.env.FIREBASE_MASSAGING_SENDER_ID': JSON.stringify(process.env.FIREBASE_MASSAGING_SENDER_ID)
+            })
         ],
         // setup devtool for track error
         devtool: isProduction ? "source-map" : 'inline-source-map',
