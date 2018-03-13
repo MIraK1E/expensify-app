@@ -16,7 +16,8 @@ const addExpense = (expense) => ({
 const startAddExpense = (expenseData = {}) => {
 
     // this dispatch come form mapDispatchtoProps
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid
         // destructor expenseData
         const {
             description = '',
@@ -28,7 +29,7 @@ const startAddExpense = (expenseData = {}) => {
         const expenses = { description, note, amount, createdAt }
         // return function to test
         // in test file we can use then because this is asyn function
-        return database.ref('expenses').push(expenses).then((ref) => {
+        return database.ref(`users/${uid}/expenses`).push(expenses).then((ref) => {
             dispatch(addExpense({
                 id: ref.key,
                 ...expenses
@@ -44,8 +45,9 @@ const removeExpense = ({ id } = {}) => ({
 })
 
 const startRemoveExpense = ({ id } = {}) => {
-    return (dispatch) => {
-        return database.ref(`expenses/${id}`).remove().then(() => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid
+        return database.ref(`users/${uid}/expenses/${id}`).remove().then(() => {
             dispatch(removeExpense({id}))
         })
     }
@@ -59,8 +61,9 @@ const editExpense = (id, updates) => ({
 })
 
 const startEditExpense = (id, updates) => {
-    return (dispatch) => {
-        return database.ref(`expenses/${id}`).update(updates).then(() => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid
+        return database.ref(`users/${uid}/expenses/${id}`).update(updates).then(() => {
             dispatch(editExpense(id, updates))
         })
     }
@@ -73,8 +76,9 @@ const setExpenses = (expenses) => ({
 })
 
 const startSetExpenses = () => {
-    return (dispatch) => {
-        return database.ref('expenses').once('value').then((snapshot) => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid
+        return database.ref(`users/${uid}/expenses`).once('value').then((snapshot) => {
 
             const Expenses = []
 
