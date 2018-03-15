@@ -7,22 +7,32 @@ import getVisibleExpenses from '../selector/expenses'
 // props come from ConnectedExpenseList(HOC) that connect to state and send props to this component
 // export for test
 export const ExpenseList = (props) => (
+    <div className="content-container">
     <div>
-        <h1>Expense List</h1>
-        {
+        <div className="list-header">
+            <div className="show-for-mobile">Expenses</div>
+            <div className="show-for-desktop">Expense</div>
+            <div className="show-for-desktop">Amount</div>
+        </div>
+    </div>
+        <div className="list-body">
+            {
             props.expenses.length === 0 ? (
-                <p>No expenses</p>
+                <div>
+                    <span className="list-item list-item--message">No expenses</span>
+                </div>
             ) : (
-            props.expenses.map((expense) => 
-            <ExpenseListItem
-            key = {expense.id}
-            id = {expense.id} 
-            description = {expense.description}
-            amount = {expense.amount}
-            createdAt = {expense.createdAt}
-            />) 
-            )
-        }
+                    props.expenses.map((expense) =>
+                        <ExpenseListItem
+                            key={expense.id}
+                            id={expense.id}
+                            description={expense.description}
+                            amount={expense.amount}
+                             createdAt={expense.createdAt}
+                        />)
+                )
+            }
+        </div>
     </div>
 )
 

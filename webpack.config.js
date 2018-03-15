@@ -22,7 +22,8 @@ module.exports = (env) => {
     return {
         
         // Where is app excute by default
-        entry: './src/app.js',
+        // includes babel-polyfill
+        entry: ['babel-polyfill', './src/app.js'],
 
          // Set where we put a big javascript file to run our application
         output: {
